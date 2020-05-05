@@ -12,11 +12,11 @@
 **********************************************************************
 '''
 
-from ../SunFounder_TB6612 import TB6612
-from ../SunFounder_PCA9685 import PCA9685
-from .import filedb
+from SunFounder_TB6612 import TB6612
+from SunFounder_PCA9685 import PCA9685
+from utils import filedb
 
-class backWheels(object):
+class BackWheels(object):
 	''' Back wheels control class '''
 	Motor_A = 17
 	Motor_B = 27
@@ -29,13 +29,15 @@ class backWheels(object):
 
 	def __init__(self, debug=False, bus_number=1, db="config"):
 		''' Init the direction channel and pwm channel '''
-		self.forward_A = True
-		self.forward_B = True
+		
 
 		self.db = filedb.fileDB(db=db)
 
 		self.forward_A = int(self.db.get('forward_A', default_value=1))
 		self.forward_B = int(self.db.get('forward_B', default_value=1))
+
+		self.forward_A = False
+		self.forward_B = False
 
 		self.left_wheel = TB6612.Motor(self.Motor_A, offset=self.forward_A)
 		self.right_wheel = TB6612.Motor(self.Motor_B, offset=self.forward_B)
@@ -152,34 +154,34 @@ class backWheels(object):
 
 def test():
 	import time
-	back_wheels = Back_Wheels()
+	backWheels = BackWheels()
 	DELAY = 0.01
 	try:
-		back_wheels.forward()
+		backWheels.forward()
 		for i in range(0, 100):
-			back_wheels.speed = i
+			backWheels.speed = i
 			print("Forward, speed =", i)
 			time.sleep(DELAY)
 		for i in range(100, 0, -1):
-			back_wheels.speed = i
+			backWheels.speed = i
 			print("Forward, speed =", i)
 			time.sleep(DELAY)
 
-		back_wheels.backward()
+		backWheels.backward()
 		for i in range(0, 100):
-			back_wheels.speed = i
+			backWheels.speed = i
 			print("Backward, speed =", i)
 			time.sleep(DELAY)
 		for i in range(100, 0, -1):
-			back_wheels.speed = i
+			backWheels.speed = i
 			print("Backward, speed =", i)
 			time.sleep(DELAY)
 	except KeyboardInterrupt:
 		print("KeyboardInterrupt, motor stop")
-		back_wheels.stop()
+		backWheels.stop()
 	finally:
 		print("Finished, motor stop")
-		back_wheels.stop()
+		backWheels.stop()
 
 if __name__ == '__main__':
 	test()

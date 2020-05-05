@@ -11,10 +11,10 @@
 *               Cavon    2016-11-04    fix for submodules
 **********************************************************************
 '''
-from .../SunFounder_PCA9685 import Servo
-from .import filedb
+from SunFounder_PCA9685 import Servo
+from utils import filedb
 
-class frontWheels(object):
+class FrontWheels(object):
 	''' Front wheels control class '''
 	FRONT_WHEEL_CHANNEL = 0
 
@@ -147,7 +147,7 @@ class frontWheels(object):
 
 def test(chn=0):
 	import time
-	front_wheels = frontWheels(channel=chn)
+	frontWheels = FrontWheels(channel=chn)
 	try:
 		while True:
 			print("turn_left")
